@@ -4,3 +4,4 @@ m=Dataset()
 trD,teD=m.trainData,m.testData
 import pdb
 pdb.set_trace()
+im,la=m.getBatch()

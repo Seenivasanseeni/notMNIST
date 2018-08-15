@@ -7,7 +7,6 @@ import random
 
 def makeDict(categories):
     '''
-
     :param categories: list of possible categories in a categorical variable
     :return: returns a dictionary which maps a string into a unique integer
     '''
@@ -20,16 +19,14 @@ def makeDict(categories):
 
 def readFromPath(path):
     '''
-
     :param path: a string denoting the path of the image
     :return: a numpy array for the image
     '''
-    data=np.fromfile(path)
+    data=np.fromfile(path) #todo 1 do a method to read image data
     return  data
 
 def makeQueue(items):
     '''
-
     :param items: list of some filepaths
     :return:  queue with filepaths
     '''
@@ -53,6 +50,9 @@ class Dataset():
         self.labelsDict=makeDict(self.labels)
         self.Data=self.makeData()
         self.trainData,self.testData=splitData(self.Data)
+        self.trainDataQueue=makeQueue(self.trainData)
+        self.testDataQueue=makeQueue(self.testData)
+        self.batchSize=100
 
     def getLabel(self,label):
         '''
@@ -63,7 +63,6 @@ class Dataset():
 
     def makeData(self,shuf=True):
         '''
-
         :return: list of tuples (path,label)
             path is that of the file and label is a category for the coreesonding image represented by path
         '''
@@ -79,3 +78,19 @@ class Dataset():
         if(shuf):
             random.shuffle(data)
         return data
+
+    def getBatch(self):
+        '''
+
+        :return: returns array of images and  labels
+        '''
+        images=[]
+        labels=[]
+
+        for _ in range(self.batchSize):
+            path,label=self.trainDataQueue.popleft()
+            self.trainDataQueue.append((path,label))
+            image=readFromPath(path)
+            images.append(image)
+            labels.append(label)
+        return images,labels
