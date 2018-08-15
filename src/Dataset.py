@@ -54,6 +54,13 @@ class Dataset():
         self.Data=self.makeData()
         self.trainData,self.testData=splitData(self.Data)
 
+    def getLabel(self,label):
+        '''
+        :param label: category in string
+        :return: a numerical value from 0 to len(self.labels)-1 . It uses self.labelsDict for this mapping
+        '''
+        return self.labelsDict[label]
+
     def makeData(self,shuf=True):
         '''
 
@@ -67,7 +74,7 @@ class Dataset():
             dirpath=os.path.join(self.root,cat)
             for file in os.listdir(dirpath):
                 filepath=os.path.join(dirpath,file)
-                data.append((filepath,cat))
+                data.append((filepath,self.getLabel(cat)))
 
         if(shuf):
             random.shuffle(data)
