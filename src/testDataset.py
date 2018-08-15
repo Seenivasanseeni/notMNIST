@@ -1,5 +1,7 @@
-from Dataset import Dataset
+from Dataset import Dataset,readFromPath
 
 m=Dataset()
-print(m.labels)
-print(m.labelsDict)
+dd=m.makeData()
+print(dd)
+import pdb
+pdb.set_trace()
