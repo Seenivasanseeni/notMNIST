@@ -2,6 +2,8 @@ import os
 import numpy as np
 from collections import deque
 import math
+import random
+
 
 def makeDict(categories):
     '''
@@ -41,7 +43,7 @@ def splitData(items,ratio=0.8):
     :param ratio: ratio of train set to total data set
     :return: returns filepaths in two split array first for
     '''
-    index=ratio*len(items)
+    index=math.floor(ratio*len(items))
     return items[:index],items[:index:]
 
 class Dataset():
@@ -49,8 +51,10 @@ class Dataset():
         self.root="/mnt/Backup/Dataset/Extract/notMNIST_small"
         self.labels=os.listdir(self.root)
         self.labelsDict=makeDict(self.labels)
+        self.Data=self.makeData()
+        self.trainData,self.testData=splitData(self.Data)
 
-    def makeData(self):
+    def makeData(self,shuf=True):
         '''
 
         :return: list of tuples (path,label)
@@ -65,4 +69,6 @@ class Dataset():
                 filepath=os.path.join(dirpath,file)
                 data.append((filepath,cat))
 
+        if(shuf):
+            random.shuffle(data)
         return data

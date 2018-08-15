@@ -1,7 +1,6 @@
 from Dataset import Dataset,readFromPath
 
 m=Dataset()
-dd=m.makeData()
-print(dd)
+trD,teD=m.trainData,m.testData
 import pdb
 pdb.set_trace()
