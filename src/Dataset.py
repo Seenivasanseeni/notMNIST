@@ -3,7 +3,7 @@ import numpy as np
 from collections import deque
 import math
 import random
-
+import matplotlib.pyplot as plt
 
 def makeDict(categories):
     '''
@@ -22,7 +22,7 @@ def readFromPath(path):
     :param path: a string denoting the path of the image
     :return: a numpy array for the image
     '''
-    data=np.fromfile(path) #todo 1 do a method to read image data
+    data=plt.imread(path)
     return  data
 
 def makeQueue(items):
