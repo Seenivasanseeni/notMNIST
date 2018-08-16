@@ -48,3 +48,17 @@ class Model():
         })
 
         return lo,acc
+
+    def test(self,images,labels):
+        '''
+
+        :param images: list of images each of size (28,28)
+        :param labels: list of labels each is a one hot vector of size 10
+        :return:  loss and accuracy
+        '''
+        lo,acc=self.sess.run([self.loss,self.accuracy],feed_dict={
+            self.images:images,
+            self.labels:labels
+        })
+
+        return lo,acc

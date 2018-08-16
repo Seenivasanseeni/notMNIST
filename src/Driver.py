@@ -2,19 +2,20 @@ import Dataset
 import Model
 
 def train(dat,Mod):
-    iterations=35
+    iterations=30
 
     for i in range(iterations):
         images,labels=dat.getBatch()
         lo,acc=Mod.train(images,labels)
         print("Iteration:",i,"Loss",lo,"Acc",acc)
-        import pdb
-        pdb.set_trace()
+        test(dat,Mod)
     return
 
 def test(dat,Mod):
-    pass
-
+    images,labels=dat.getBatch(True)
+    lo,acc=Mod.test(images,labels)
+    print("TEST","LOSS",lo,"ACCURACY",acc)
+    return
 
 def main():
     dat=Dataset.Dataset()

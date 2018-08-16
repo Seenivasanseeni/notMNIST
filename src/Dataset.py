@@ -89,17 +89,20 @@ class Dataset():
             random.shuffle(data)
         return data
 
-    def getBatch(self):
+    def getBatch(self,test=False):
         '''
 
         :return: returns array of images and  labels
         '''
         images=[]
         labels=[]
+        dataQueue=self.trainDataQueue
+        if(test):
+            dataQueue=self.testDataQueue
 
         for _ in range(self.batchSize):
-            path,label=self.trainDataQueue.popleft()
-            self.trainDataQueue.append((path,label))
+            path,label=dataQueue.popleft()
+            dataQueue.append((path,label))
             image=readFromPath(path)
             images.append(image)
             labels.append(label)
