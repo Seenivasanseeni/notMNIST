@@ -2,13 +2,14 @@ import Dataset
 import Model
 
 def train(dat,Mod):
-    iterations=200
-
+    iterations=500
+    printStep=20
     for i in range(iterations):
         images,labels=dat.getBatch()
         lo,acc=Mod.train(images,labels)
-        print("Iteration:",i,"Loss",lo,"Acc",acc)
-        test(dat,Mod)
+        if(i%printStep==0):
+            print("Iteration:",i,"Loss",lo,"Acc",acc)
+            test(dat,Mod)
     return
 
 def test(dat,Mod):

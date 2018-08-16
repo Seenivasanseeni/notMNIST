@@ -1,5 +1,4 @@
 import os
-import numpy as np
 from collections import deque
 import math
 import random

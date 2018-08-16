@@ -9,9 +9,13 @@ class Model():
         self.conv1=tf.layers.conv2d(self.images_r,32,kernel_size=[5,5],strides=[2,2],padding="VALID",name="conv1")
         self.pool1=tf.layers.max_pooling2d(self.conv1,pool_size=[2,2],strides=[2,2],name="pool1")
 
-        self.flat=tf.layers.flatten(self.pool1,name="flatten")
+        self.conv2=tf.layers.conv2d(self.pool1,64,kernel_size=[5,5])
 
-        self.dropout=tf.nn.dropout(self.flat,keep_prob=0.5)
+        self.pool2=tf.layers.max_pooling2d(self.conv2,pool_size=[2,2],strides=[1,1])
+
+        self.flat=tf.layers.flatten(self.pool2,name="flatten")
+
+        self.dropout=tf.nn.dropout(self.flat,keep_prob=0.7)
 
         self.dense1=tf.layers.dense(self.dropout,units=50,name="dense1")
 
@@ -19,20 +23,20 @@ class Model():
 
         self.logits=tf.nn.softmax(self.dense2)
 
-        self.loss=tf.reduce_sum(tf.nn.softmax_cross_entropy_with_logits(
+        self.loss=tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(
             logits=self.logits,labels=self.labels
         ))
 
         self.accuracy=tf.reduce_mean(
             tf.cast(
                 tf.equal(
-                    self.logits,self.labels
+                    tf.argmax(self.logits,axis=1),tf.argmax(self.labels,1)
                 )
                 ,tf.float32
             )
-        )
+        ) * 100
 
-        self.optim=tf.train.AdamOptimizer(learning_rate=0.1).minimize(self.loss)
+        self.optim=tf.train.GradientDescentOptimizer(learning_rate=0.1).minimize(self.loss)
 
         self.sess=tf.InteractiveSession()
         tf.initialize_all_variables().run()
