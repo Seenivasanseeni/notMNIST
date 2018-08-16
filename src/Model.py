@@ -10,7 +10,10 @@ class Model():
         self.pool1=tf.layers.max_pooling2d(self.conv1,pool_size=[2,2],strides=[2,2],name="pool1")
 
         self.flat=tf.layers.flatten(self.pool1,name="flatten")
-        self.dense1=tf.layers.dense(self.flat,units=50,name="dense1")
+
+        self.dropout=tf.nn.dropout(self.flat,keep_prob=0.5)
+
+        self.dense1=tf.layers.dense(self.dropout,units=50,name="dense1")
 
         self.dense2=tf.layers.dense(self.dense1,units=10,name="dense2")
 
@@ -29,7 +32,7 @@ class Model():
             )
         )
 
-        self.optim=tf.train.GradientDescentOptimizer(learning_rate=0.1).minimize(self.loss)
+        self.optim=tf.train.AdamOptimizer(learning_rate=0.1).minimize(self.loss)
 
         self.sess=tf.InteractiveSession()
         tf.initialize_all_variables().run()
