@@ -54,6 +54,16 @@ class Dataset():
         self.testDataQueue=makeQueue(self.testData)
         self.batchSize=100
 
+    def getOnehotLabel(self,label):
+        '''
+
+        :param label: label which is one of the categories
+        :return: a one hot vector
+        '''
+        onehot=[0]*len(self.labels)
+        onehot[self.labelsDict[label]]=1
+        return onehot
+
     def getLabel(self,label):
         '''
         :param label: category in string
@@ -73,7 +83,7 @@ class Dataset():
             dirpath=os.path.join(self.root,cat)
             for file in os.listdir(dirpath):
                 filepath=os.path.join(dirpath,file)
-                data.append((filepath,self.getLabel(cat)))
+                data.append((filepath,self.getOnehotLabel(cat)))
 
         if(shuf):
             random.shuffle(data)
