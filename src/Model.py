@@ -4,6 +4,7 @@ class Model():
     def initializeModel(self):
         self.images=tf.placeholder(tf.float32,shape=[None,28,28],name="images")
         self.labels=tf.placeholder(tf.float32,shape=[None,10],name="labels")
+        self.keep_prob=tf.placeholder(tf.float32,[1])
         self.images_r=tf.reshape(self.images,shape=[-1,28,28,1],name="ReshapedImage")
 
         self.conv1=tf.layers.conv2d(self.images_r,32,kernel_size=[5,5],strides=[2,2],padding="VALID",name="conv1")
@@ -15,7 +16,7 @@ class Model():
 
         self.flat=tf.layers.flatten(self.pool2,name="flatten")
 
-        self.dropout=tf.nn.dropout(self.flat,keep_prob=0.7)
+        self.dropout=self.flat * self.keep_prob
 
         self.dense1=tf.layers.dense(self.dropout,units=50,name="dense1")
 
@@ -36,7 +37,7 @@ class Model():
             )
         ) * 100
 
-        self.optim=tf.train.GradientDescentOptimizer(learning_rate=0.1).minimize(self.loss)
+        self.optim=tf.train.GradientDescentOptimizer(learning_rate=0.3).minimize(self.loss)
 
         self.sess=tf.InteractiveSession()
         tf.initialize_all_variables().run()
@@ -51,7 +52,8 @@ class Model():
         '''
         _,lo,acc=self.sess.run([self.optim,self.loss,self.accuracy],feed_dict={
             self.images:images,
-            self.labels:labels
+            self.labels:labels,
+            self.keep_prob:[0.3]
         })
 
         return lo,acc
@@ -65,7 +67,8 @@ class Model():
         '''
         lo,acc=self.sess.run([self.loss,self.accuracy],feed_dict={
             self.images:images,
-            self.labels:labels
+            self.labels:labels,
+            self.keep_prob:[1]
         })
 
         return lo,acc
