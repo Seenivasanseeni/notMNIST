@@ -1,12 +1,10 @@
 import tensorflow as tf
 
 class Model():
-    def __iter__(self):
-        pass
     def initializeModel(self):
         self.images=tf.placeholder(tf.float32,shape=[None,28,28],name="images")
         self.labels=tf.placeholder(tf.float32,shape=[None,10],name="labels")
-        self.images_r=tf.reshape(self.images,shape=[-1,28,28,1],name="Reshaped image")
+        self.images_r=tf.reshape(self.images,shape=[-1,28,28,1],name="ReshapedImage")
 
         self.conv1=tf.layers.conv2d(self.images_r,32,kernel_size=[5,5],strides=[2,2],padding="VALID",name="conv1")
         self.pool1=tf.layers.max_pooling2d(self.conv1,pool_size=[2,2],strides=[2,2],name="pool1")
