@@ -102,8 +102,11 @@ class Dataset():
 
         for _ in range(self.batchSize):
             path,label=dataQueue.popleft()
-            dataQueue.append((path,label))
-            image=readFromPath(path)
-            images.append(image)
-            labels.append(label)
+            try:
+                image=readFromPath(path)
+                images.append(image)
+                labels.append(label)
+                dataQueue.append((path, label))
+            except:
+                print("Error Occured while reading a file")
         return images,labels

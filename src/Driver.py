@@ -2,7 +2,7 @@ import Dataset
 import Model
 
 def train(dat,Mod):
-    iterations=30
+    iterations=1000
 
     for i in range(iterations):
         images,labels=dat.getBatch()
