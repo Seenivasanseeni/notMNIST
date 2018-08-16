@@ -16,9 +16,9 @@ class Model():
 
         self.logits=tf.nn.softmax(self.dense2)
 
-        self.loss=tf.nn.softmax_cross_entropy_with_logits(
+        self.loss=tf.reduce_sum(tf.nn.softmax_cross_entropy_with_logits(
             logits=self.logits,labels=self.labels
-        )
+        ))
 
         self.accuracy=tf.reduce_mean(
             tf.cast(
@@ -29,7 +29,7 @@ class Model():
             )
         )
 
-        self.optim=tf.train.GradientDescentOptimizer(learning_rate=0.001).minimize(self.loss)
+        self.optim=tf.train.GradientDescentOptimizer(learning_rate=0.1).minimize(self.loss)
 
         self.sess=tf.InteractiveSession()
         tf.initialize_all_variables().run()
