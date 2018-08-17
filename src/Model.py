@@ -2,6 +2,10 @@ import tensorflow as tf
 
 class Model():
     def initializeModel(self):
+        '''
+        initializes the model
+        :return: nothing
+        '''
         self.images=tf.placeholder(tf.float32,shape=[None,28,28],name="images")
         self.labels=tf.placeholder(tf.float32,shape=[None,10],name="labels")
         self.keep_prob=tf.placeholder(tf.float32,[1])
